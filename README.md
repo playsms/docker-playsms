@@ -1,39 +1,30 @@
-tutum-docker-wordpress
-======================
+docker-playsms
+==============
 
-[![Deploy to Tutum](https://s.tutum.co/deploy-to-tutum.svg)](https://dashboard.tutum.co/stack/deploy/)
-
-Out-of-the-box Wordpress docker image
+Out-of-the-box playSMS docker image
 
 
 Usage
 -----
 
-To create the image `tutum/wordpress`, execute the following command on the tutum-docker-wordpress folder:
+To create the image `antonraharja/playsms`, execute the following command on the docker-playsms folder:
 
-	docker build -t tutum/wordpress .
+	docker build -t antonraharja/playsms .
 
 You can now push your new image to the registry:
 
-	docker push tutum/wordpress
+	docker push antonraharja/playsms
 
 
-Running your Wordpress docker image
------------------------------------
+Running your playSMS docker image
+---------------------------------
 
 Start your image:
 
-	docker run -d -p 80:80 tutum/wordpress
+	docker run -d -p 80:80 antonraharja/playsms
 
 Test your deployment:
 
 	curl http://localhost/
 
-You can now start configuring your Wordpress container!
-
-
-More information
-----------------
-
-For details on how to access the bundled MySQL Server, set specific passwords or disable .htaccess,
-please visit the [tutum/lamp repository on github](https://github.com/tutumcloud/tutum-docker-lamp)
+You can now start configuring your playSMS container

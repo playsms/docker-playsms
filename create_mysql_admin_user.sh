@@ -10,8 +10,8 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
-echo "=> Creating database wordpress in MySQL"
-/create_db.sh wordpress
+echo "=> Creating database playSMS in MySQL"
+/create_db.sh playsms
 
 
 PASS=${MYSQL_PASS:-$(pwgen -s 12 1)}
