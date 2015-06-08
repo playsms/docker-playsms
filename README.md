@@ -23,7 +23,7 @@ You can now push your new image to the registry:
 Get ready-to-use image
 ----------------------
 
-Pull image
+Pull/download the image from docker registry:
 
 	docker pull antonraharja/playsms
 
