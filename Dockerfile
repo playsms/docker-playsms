@@ -20,8 +20,9 @@ ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD create_db.sh /create_db.sh
 RUN chmod +x /*.sh
 
+ADD install.sh /app/install.sh
+RUN chmod +x /app/install.sh
+RUN /app/install.sh
 
 EXPOSE 80 3306
 CMD ["/run.sh"]
-
-CMD ["cd /app && ./install-playsms.sh"]
