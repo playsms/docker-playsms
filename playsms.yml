@@ -1,4 +1,4 @@
-wordpress:
-  image: tutum/wordpress
+playsms:
+  image: antonraharja/playsms
   ports:
     - 80:80

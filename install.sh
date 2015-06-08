@@ -1,5 +1,15 @@
 #!/bin/bash
 
+/usr/bin/mysqld_safe >/dev/null 2>&1 &
+
+RET=1
+while [[ RET -ne 0 ]]; do
+    echo "=> Waiting for confirmation of MySQL service startup"
+    sleep 5
+    mysql -uroot -e "status" > /dev/null 2>&1
+    RET=$?
+done
+
 cd /app
 
 INSTALLCONF="./install.conf"
@@ -116,7 +126,8 @@ set +e
 #mysqladmin -u $DBUSER -p$DBPASS -h $DBHOST -P $DBPORT create $DBNAME >/dev/null 2>&1
 #set -e
 echo -n .
-mysql -u $DBUSER -p$DBPASS -h $DBHOST -P $DBPORT $DBNAME < db/playsms.sql
+#mysql -u $DBUSER -p$DBPASS -h $DBHOST -P $DBPORT $DBNAME < db/playsms.sql
+mysql -uroot playsms < db/playsms.sql
 echo -n .
 cp $PATHWEB/config-dist.php $PATHWEB/config.php
 echo -n .
@@ -173,5 +184,7 @@ echo
 echo "1. Possibly theres an issue with composer updates, try to run: \"composer update\""
 echo "2. Manually run playsmsd, eg: \"playsmsd start\", and then \"playsmsd status\""
 echo
+
+mysqladmin -uroot shutdown
 
 exit 0

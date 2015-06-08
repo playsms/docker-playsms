@@ -5,7 +5,15 @@ if [[ $# -eq 0 ]]; then
 	exit 1
 fi
 
-/usr/bin/mysqld_safe > /dev/null 2>&1 &
+/usr/bin/mysqld_safe >/dev/null 2>&1 &
+
+RET=1
+while [[ RET -ne 0 ]]; do
+    echo "=> Waiting for confirmation of MySQL service startup"
+    sleep 5
+    mysql -uroot -e "status" > /dev/null 2>&1
+    RET=$?
+done
 
 echo "=> Creating database $1"
 RET=1

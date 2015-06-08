@@ -14,9 +14,12 @@ else
     echo "=> Using an existing volume of MySQL"
 fi
 
-exec supervisord -n
-
 if [[ ! -e /etc/playsmsd.conf ]]; then
-	cd /app
-	./install.sh
+    echo "=> Install playSMS"
+    /install.sh
 fi
+
+sleep 5
+
+echo "=> Exec supervisord"
+exec supervisord -n

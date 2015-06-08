@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/usr/bin/mysqld_safe > /dev/null 2>&1 &
+/usr/bin/mysqld_safe >/dev/null 2>&1 &
 
 RET=1
 while [[ RET -ne 0 ]]; do
@@ -13,6 +13,8 @@ done
 echo "=> Creating database playSMS in MySQL"
 /create_db.sh playsms
 
+echo "=> Installing playSMS"
+/install.sh
 
 PASS=${MYSQL_PASS:-$(pwgen -s 12 1)}
 _word=$( [ ${MYSQL_PASS} ] && echo "preset" || echo "random" )

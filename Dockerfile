@@ -13,17 +13,18 @@ RUN rm -fr /app && git clone --branch 1.0 --depth=1 https://github.com/antonraha
 ADD install.conf /app/install.conf
 
 # Modify permissions to allow plugin upload
-RUN chown -R www-data:www-data /app/* /var/www/html
+RUN chown -R www-data:www-data /app/*
+
+# Add daemon config
+Add start-playsmsd.sh /start-playsmsd.sh
+ADD supervisord-playsmsd.conf /etc/supervisor/conf.d/supervisord-playsmsd.conf
 
 # Add scripts
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD create_db.sh /create_db.sh
+ADD install.sh /install.sh
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
-
-# Add playSMS install script
-ADD install.sh /app/install.sh
-RUN chmod +x /app/install.sh
 
 EXPOSE 80 3306
 CMD ["/run.sh"]
