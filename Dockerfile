@@ -15,14 +15,15 @@ ADD install.conf /app/install.conf
 # Modify permissions to allow plugin upload
 RUN chown -R www-data:www-data /app/* /var/www/html
 
-# Add database setup script
+# Add scripts
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD create_db.sh /create_db.sh
+ADD run.sh /run.sh
 RUN chmod +x /*.sh
 
+# Add playSMS install script
 ADD install.sh /app/install.sh
 RUN chmod +x /app/install.sh
-RUN /app/install.sh
 
 EXPOSE 80 3306
 CMD ["/run.sh"]
