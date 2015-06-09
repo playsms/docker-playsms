@@ -18,10 +18,9 @@ RUN a2enmod rewrite
 ADD start-mysqld.sh /start-mysqld.sh
 ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
+ADD create_db.sh /create_db.sh
 ADD my.cnf /etc/mysql/conf.d/my.cnf
 RUN rm -rf /var/lib/mysql/*
-
-# Add image configuration and scripts
 
 # playsms
 ADD start-playsmsd.sh /start-playsmsd.sh

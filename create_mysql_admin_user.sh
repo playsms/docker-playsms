@@ -10,12 +10,6 @@ while [[ RET -ne 0 ]]; do
     RET=$?
 done
 
-echo "=> Creating database playSMS in MySQL"
-/create_db.sh playsms
-
-echo "=> Installing playSMS"
-/install.sh
-
 PASS=${MYSQL_PASS:-$(pwgen -s 12 1)}
 _word=$( [ ${MYSQL_PASS} ] && echo "preset" || echo "random" )
 echo "=> Creating MySQL admin user with ${_word} password"

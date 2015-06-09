@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "=> Creating database playSMS in MySQL"
+/create_db.sh playsms
+
 /usr/bin/mysqld_safe >/dev/null 2>&1 &
 
 RET=1
@@ -186,5 +189,8 @@ echo "2. Manually run playsmsd, eg: \"playsmsd start\", and then \"playsmsd stat
 echo
 
 mysqladmin -uroot shutdown
+
+echo "=> Creating MySQL admin user"
+/create_mysql_admin_user.sh
 
 exit 0
