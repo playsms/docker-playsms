@@ -11,13 +11,13 @@ A flexible Web-based mobile portal system that it can be made to fit to various 
 Build image
 -----------
 
-To build the image `antonraharja/playsms`, execute the following command on the `docker-playsms` folder:
+To build the image `yourname/playsms`, execute the following command on the `docker-playsms` folder:
 
-	docker build -t antonraharja/playsms .
+	docker build -t yourname/playsms .
 
 You can now push your new image to the registry:
 
-	docker push antonraharja/playsms
+	docker push yourname/playsms
 
 
 Get ready-to-use image
