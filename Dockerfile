@@ -12,6 +12,7 @@ ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 RUN a2enmod rewrite
+RUN rf -rf /var/www/html/*
 
 # mysql
 ADD start-mysqld.sh /start-mysqld.sh
@@ -28,13 +29,13 @@ RUN rm -rf /app && mkdir /app && git clone --branch 1.0 --depth=1 https://github
 ADD install.conf /app/install.conf
 ADD install.sh /install.sh
 
-# scripts
+# php
+ENV PHP_UPLOAD_MAX_FILESIZE 20M
+ENV PHP_POST_MAX_SIZE 20M
+
+# finalize scripts
 ADD run.sh /run.sh
 RUN chmod +x /*.sh
-
-# env for php
-ENV PHP_UPLOAD_MAX_FILESIZE 10M
-ENV PHP_POST_MAX_SIZE 10M
 
 # Add volumes for MySQL 
 VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
