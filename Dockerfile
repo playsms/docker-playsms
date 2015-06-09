@@ -12,7 +12,7 @@ ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD apache_default /etc/apache2/sites-available/000-default.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 RUN a2enmod rewrite
-RUN rf -rf /var/www/html/*
+RUN rm -rf /var/www/html/*
 
 # mysql
 ADD start-mysqld.sh /start-mysqld.sh
