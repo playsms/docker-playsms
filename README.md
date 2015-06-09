@@ -1,127 +1,55 @@
-tutum-docker-lamp
-=================
+docker-playsms
+==============
 
-[![Deploy to Tutum](https://s.tutum.co/deploy-to-tutum.svg)](https://dashboard.tutum.co/stack/deploy/)
+This project is playSMS docker image project.
 
-Out-of-the-box LAMP image (PHP+MySQL)
+playSMS is a free and open source SMS management software.
+
+A flexible Web-based mobile portal system that it can be made to fit to various services such as an SMS gateway, bulk SMS provider, personal messaging system, corporate and group communication tools.
 
 
-Usage
------
+Build image
+-----------
 
-To create the image `tutum/lamp`, execute the following command on the tutum-docker-lamp folder:
+To build the image `yourname/playsms`, execute the following command on the `docker-playsms` folder:
 
-	docker build -t tutum/lamp .
+	docker build -t yourname/playsms .
 
 You can now push your new image to the registry:
 
-	docker push tutum/lamp
+	docker push yourname/playsms
 
 
-Running your LAMP docker image
-------------------------------
+Get ready-to-use image
+----------------------
 
-Start your image binding the external ports 80 and 3306 in all interfaces to your container:
+Pull/download the image from docker registry:
 
-	docker run -d -p 80:80 -p 3306:3306 tutum/lamp
-
-Test your deployment:
-
-	curl http://localhost/
-
-Hello world!
+	docker pull antonraharja/playsms
 
 
-Loading your custom PHP application
------------------------------------
+Running playSMS docker image
+---------------------------------
 
-In order to replace the "Hello World" application that comes bundled with this docker image,
-create a new `Dockerfile` in an empty folder with the following contents:
+Run this once for installation:
 
-	FROM tutum/lamp:latest
-	RUN rm -fr /app && git clone https://github.com/username/customapp.git /app
-	EXPOSE 80 3306
-	CMD ["/run.sh"]
+	docker run -d -p 80:80 antonraharja/playsms
 
-replacing `https://github.com/username/customapp.git` with your application's GIT repository.
-After that, build the new `Dockerfile`:
+Get CONTAINER_ID of your image:
 
-	docker build -t username/my-lamp-app .
+	docker ps -l
 
-And test it:
+To start your container:
 
-	docker run -d -p 80:80 -p 3306:3306 username/my-lamp-app
+	docker start <CONTAINER_ID>
 
-Test your deployment:
+To stop your container:
 
-	curl http://localhost/
-
-That's it!
+	docker stop <CONTAINER_ID>
 
 
-Connecting to the bundled MySQL server from within the container
-----------------------------------------------------------------
+References
+----------
 
-The bundled MySQL server has a `root` user with no password for local connections.
-Simply connect from your PHP code with this user:
-
-	<?php
-	$mysql = new mysqli("localhost", "root");
-	echo "MySQL Server info: ".$mysql->host_info;
-	?>
-
-
-Connecting to the bundled MySQL server from outside the container
------------------------------------------------------------------
-
-The first time that you run your container, a new user `admin` with all privileges
-will be created in MySQL with a random password. To get the password, check the logs
-of the container by running:
-
-	docker logs $CONTAINER_ID
-
-You will see an output like the following:
-
-	========================================================================
-	You can now connect to this MySQL Server using:
-
-	    mysql -uadmin -p47nnf4FweaKu -h<host> -P<port>
-
-	Please remember to change the above password as soon as possible!
-	MySQL user 'root' has no password but only allows local connections
-	========================================================================
-
-In this case, `47nnf4FweaKu` is the password allocated to the `admin` user.
-
-You can then connect to MySQL:
-
-	 mysql -uadmin -p47nnf4FweaKu
-
-Remember that the `root` user does not allow connections from outside the container -
-you should use this `admin` user instead!
-
-
-Setting a specific password for the MySQL server admin account
---------------------------------------------------------------
-
-If you want to use a preset password instead of a random generated one, you can
-set the environment variable `MYSQL_PASS` to your specific password when running the container:
-
-	docker run -d -p 80:80 -p 3306:3306 -e MYSQL_PASS="mypass" tutum/lamp
-
-You can now test your new admin password:
-
-	mysql -uadmin -p"mypass"
-
-
-Disabling .htaccess
---------------------
-
-`.htaccess` is enabled by default. To disable `.htaccess`, you can remove the following contents from `Dockerfile`
-
-	# config to enable .htaccess
-    ADD apache_default /etc/apache2/sites-available/000-default.conf
-    RUN a2enmod rewrite
-
-
-**by http://www.tutum.co**
+- https://github.com/tutumcloud/tutum-docker-lamp
+- https://github.com/tutumcloud/tutum-docker-wordpress
