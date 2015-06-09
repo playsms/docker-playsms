@@ -41,7 +41,7 @@ Or run this instead if you pull the image form docker hub:
 
 	docker run -d -p 80:80 antonraharja/playsms
 
-Get <CONTAINER_ID> of your image:
+Get `<CONTAINER_ID>` of your image:
 
 	docker ps -l
 
