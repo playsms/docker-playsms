@@ -53,12 +53,16 @@ Stop your container:
 
 	docker stop <CONTAINER_ID>
 
-Change shell or SSH root password:
+Follow logs:
+
+	docker logs <CONTAINER_ID>
+
+Once `sshd` runs, change the default shell or SSH root password:
 
 	ssh -p 2222 root@localhost
 	passwd root
 
-Default shell or SSH root password is `changemeplease`
+The default shell or SSH root password is `changemeplease`
 
 
 Maintainer
