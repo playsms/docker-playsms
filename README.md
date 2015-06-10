@@ -60,7 +60,7 @@ Stop your container:
 
 Running command inside the container:
 
-	docker exec <CONTAINER_ID> <COMMANDS>
+	docker exec <CONTAINER_ID> <COMMAND>
 
 Example of running command `playsmsd check` on `CONTAINER_ID` `dce34421e079`:
 
