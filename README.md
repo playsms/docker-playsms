@@ -8,8 +8,8 @@ playSMS is a free and open source SMS management software. A flexible Web-based 
 Visit [playSMS](http://playsms.org) website for more information.
 
 
-Build and Customize
--------------------
+Build
+-----
 
 To build the image `yourname/playsms`, execute the following command on the `docker-playsms` folder:
 
@@ -20,8 +20,8 @@ Push your new image to the docker hub:
 	docker push yourname/playsms
 
 
-Install and Usage
------------------
+Install
+-------
 
 Pull/download the image from docker hub:
 
@@ -35,10 +35,6 @@ Get `<CONTAINER_ID>` of your image:
 
 	docker ps -l
 
-Start your container:
-
-	docker start <CONTAINER_ID>
-
 Follow logs:
 
 	docker logs -f <CONTAINER_ID>
@@ -48,9 +44,27 @@ Once `sshd` runs, change the default shell or SSH root password:
 	ssh -p 2222 root@localhost
 	passwd root
 
-The default shell or SSH root password is `changemeplease`
+Change the password to your own secure password. The default shell or SSH root password is `changemeplease`
 
-Change the password to your own secure password
+
+Usage
+-----
+
+Start your container:
+
+	docker start <CONTAINER_ID>
+
+Stop your container:
+
+	docker stop <CONTAINER_ID>
+
+Running command inside the container:
+
+	docker exec <CONTAINER_ID> <COMMANDS>
+
+Example of running command `playsmsd check` on `CONTAINER_ID` `dce34421e079`:
+
+	docker exec dce34421e079 playsmsd check
 
 
 Maintainer
