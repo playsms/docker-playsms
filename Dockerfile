@@ -4,7 +4,17 @@ MAINTAINER Anton Raharja <antonrd@gmail.com>
 # debs
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-	apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php-apc php5-mcrypt php5-gd php5-imap php5-curl
+	apt-get -y install supervisor git openssh-server apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php-apc php5-mcrypt php5-gd php5-imap php5-curl
+
+# ssh
+ADD start-sshd.sh /start-sshd.sh
+ADD supervisord-sshd.conf /etc/supervisor/conf.d/supervisord-sshd.conf
+RUN mkdir /var/run/sshd
+RUN echo 'root:changemeplease' | chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
 
 # apache2
 ADD start-apache2.sh /start-apache2.sh
@@ -40,5 +50,5 @@ RUN chmod +x /*.sh
 # Add volumes for MySQL 
 VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
 
-EXPOSE 80 3306
+EXPOSE 22 80 3306
 CMD ["/run.sh"]

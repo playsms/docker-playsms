@@ -35,11 +35,11 @@ Install and Run
 
 Run this once for installation:
 
-	docker run -d -p 80:80 yourname/playsms
+	docker run -d -p 2222:22 -p 80:80 yourname/playsms
 
 Or run this instead if you pull the image form docker hub:
 
-	docker run -d -p 80:80 antonraharja/playsms
+	docker run -d -p 2222:22 -p 80:80 antonraharja/playsms
 
 Get `<CONTAINER_ID>` of your image:
 
@@ -52,6 +52,13 @@ Start your container:
 Stop your container:
 
 	docker stop <CONTAINER_ID>
+
+Change shell or SSH root password:
+
+	ssh -p 2222 root@localhost
+	passwd root
+
+Default shell or SSH root password is `changemeplease`
 
 
 Maintainer
