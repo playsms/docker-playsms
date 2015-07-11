@@ -1,6 +1,11 @@
 docker-playsms
 ==============
 
+Item    | Info
+------- | -------
+Version | 1.3
+Update  | 150712
+
 This project is playSMS docker image project.
 
 playSMS is a free and open source SMS management software. A flexible Web-based mobile portal system that it can be made to fit to various services such as an SMS gateway, bulk SMS provider, personal messaging system, corporate and group communication tools.

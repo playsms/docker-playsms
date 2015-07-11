@@ -4,7 +4,7 @@ MAINTAINER Anton Raharja <antonrd@gmail.com>
 # debs
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-	apt-get -y install supervisor git openssh-server apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php-apc php5-mcrypt php5-gd php5-imap php5-curl
+	apt-get -y install supervisor git openssh-server pwgen apache2 libapache2-mod-php5 mysql-server php5 php5-cli php5-mysql php5-mcrypt php5-gd php5-imap php5-curl
 
 # ssh
 ADD start-sshd.sh /start-sshd.sh
@@ -35,7 +35,7 @@ RUN rm -rf /var/lib/mysql/*
 # playsms
 ADD start-playsmsd.sh /start-playsmsd.sh
 ADD supervisord-playsmsd.conf /etc/supervisor/conf.d/supervisord-playsmsd.conf
-RUN rm -rf /app && mkdir /app && git clone --branch 1.0 --depth=1 https://github.com/antonraharja/playSMS.git /app
+RUN rm -rf /app && mkdir /app && git clone --branch 1.1 --depth=1 https://github.com/antonraharja/playSMS.git /app
 ADD install.conf /app/install.conf
 ADD install.sh /install.sh
 
