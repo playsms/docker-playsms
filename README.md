@@ -3,9 +3,9 @@ docker-playsms
 
 Item            | Info
 --------------- | ---------------
-Project update  | 150906
-Project version | 1.4
-playSMS version | 1.3
+Project update  | 151007
+Project version | 1.5
+playSMS version | 1.3.1
 
 This project is playSMS docker image project.
 
