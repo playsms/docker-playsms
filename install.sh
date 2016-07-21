@@ -87,8 +87,6 @@ echo
 echo "Please wait while the install script downloading composer"
 echo
 
-cd /tmp/
-
 php -r "readfile('https://getcomposer.org/installer');" | php >/dev/null 2>&1
 
 if [ -e "./composer.phar" ]; then
@@ -101,7 +99,7 @@ if [ -e "./composer.phar" ]; then
 
 	echo "Composer is ready in this folder"
 	echo
-	echo "Pleas wait while composer getting and updating required packages"
+	echo "Please wait while composer getting and updating required packages"
 	echo
 
 	if [ -x "./composer.phar" ]; then
@@ -120,24 +118,6 @@ else
 	echo
 	exit 1
 fi
-
-echo "Composer has been installed"
-echo
-echo "Pleas wait while composer getting and updating required packages"
-echo
-
-if [ -x "/usr/local/bin/composer.phar" ]; then
-	cd "$PATHSRC"
-	/usr/local/bin/composer.phar update
-else
-	echo "ERROR: unable to get composer from https://getcomposer.com"
-	echo
-	exit 1
-fi
-
-echo
-echo "Composer has been installed and packages has been updated"
-echo
 
 sleep 3
 
@@ -182,7 +162,8 @@ echo "PLAYSMS_LOG=\"$PATHLOG\"" >> /etc/playsmsd.conf
 echo "DAEMON_SLEEP=\"1\"" >> /etc/playsmsd.conf
 echo "ERROR_REPORTING=\"E_ALL ^ (E_NOTICE | E_WARNING)\"" >> /etc/playsmsd.conf
 echo -n .
-cp -rR daemon/linux/bin/playsmsd $PATHBIN
+cp -rR daemon/linux/bin/playsmsd.php $PATHBIN/playsmsd
+chmod +x $PATHBIN/playsmsd
 echo -n .
 echo "end"
 echo

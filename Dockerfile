@@ -3,7 +3,7 @@ MAINTAINER Anton Raharja <antonrd@gmail.com>
 
 # debs
 ENV DEBIAN_FRONTEND noninteractive
-RUN apt-get update && \
+RUN apt-get -y update && \
 	apt-get -y install supervisor git openssh-server pwgen apache2 libapache2-mod-php5 mysql-server php5 php5-cli php5-mysql php5-mcrypt php5-gd php5-imap php5-curl
 
 # ssh
