@@ -35,7 +35,7 @@ RUN rm -rf /var/lib/mysql/*
 # playsms
 ADD start-playsmsd.sh /start-playsmsd.sh
 ADD supervisord-playsmsd.conf /etc/supervisor/conf.d/supervisord-playsmsd.conf
-RUN rm -rf /app && mkdir /app && git clone --branch 1.4 --depth=1 https://github.com/antonraharja/playSMS.git /app
+RUN rm -rf /app && mkdir /app && git clone --branch 1.4.1 --depth=1 https://github.com/antonraharja/playSMS.git /app
 ADD install.conf /app/install.conf
 ADD install.sh /install.sh
 
