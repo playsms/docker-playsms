@@ -3,9 +3,9 @@ docker-playsms
 
 Item            | Info
 --------------- | ---------------
-Project update  | 180626
-Project version | 1.8
-playSMS version | 1.4.2
+Project update  | 200311
+Project version | 1.9
+playSMS version | 1.4.3
 
 This project is playSMS docker image project.
 
@@ -76,7 +76,7 @@ Example of running command `playsmsd check` on `CONTAINER_ID` `dce34421e079`:
 Maintainer
 ----------
 
-- Anton Raharja <antonrd@gmail.com>
+- Anton Raharja <araharja@protonmail.com>
 
 
 References
