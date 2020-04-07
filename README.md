@@ -3,13 +3,13 @@ docker-playsms
 
 Item            | Info
 --------------- | ---------------
-Project update  | 200311
-Project version | 1.9
+Project update  | 200407
+Project version | 2.0
 playSMS version | 1.4.3
 
 This project is playSMS docker image project.
 
-playSMS is a free and open source SMS management software. A flexible Web-based mobile portal system that it can be made to fit to various services such as an SMS gateway, bulk SMS provider, personal messaging system, corporate and group communication tools.
+playSMS is a Free and Open Source SMS Gateway Software. Not A Free SMS Service.
 
 Visit [playSMS](http://playsms.org) website for more information.
 
@@ -35,7 +35,7 @@ Pull/download the image from docker hub:
 
 Run this for installation, just the first time:
 
-	docker run -d -p 2222:22 -p 80:80 antonraharja/playsms
+	docker run -d -p 11022:22 -p 11080:80 -p 11033:3306 antonraharja/playsms
 
 Get `<CONTAINER_ID>` of your image:
 
@@ -47,7 +47,7 @@ Follow logs:
 
 Once `sshd` runs, change the default shell or SSH root password:
 
-	ssh -p 2222 root@localhost
+	ssh -p 11022 root@localhost
 	passwd root
 
 Change the password to your own secure password. The default shell or SSH root password is `changemeplease`

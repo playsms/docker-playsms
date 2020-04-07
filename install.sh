@@ -194,7 +194,4 @@ echo
 
 mysqladmin -uroot shutdown
 
-echo "=> Creating MySQL admin user"
-/create_mysql_admin_user.sh
-
 exit 0

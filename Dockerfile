@@ -1,17 +1,19 @@
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 MAINTAINER Anton Raharja <araharja@protonmail.com>
+ADD README.md /README.md
 
 # debs
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update && \
-	apt-get -y install supervisor git openssh-server pwgen apache2 libapache2-mod-php5 mysql-server php5 php5-cli php5-mysql php5-mcrypt php5-gd php5-imap php5-curl
+	apt-get -y install apt-utils && \
+	apt-get -y install supervisor git openssh-server pwgen apache2 libapache2-mod-php mariadb-server php php-cli php-mysql php-gd php-imap php-curl php-xml php-mbstring php-zip mc unzip
 
 # ssh
 ADD start-sshd.sh /start-sshd.sh
 ADD supervisord-sshd.conf /etc/supervisor/conf.d/supervisord-sshd.conf
 RUN mkdir /var/run/sshd
 RUN echo 'root:changemeplease' | chpasswd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
@@ -27,7 +29,6 @@ RUN rm -rf /var/www/html/*
 # mysql
 ADD start-mysqld.sh /start-mysqld.sh
 ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
 ADD create_db.sh /create_db.sh
 ADD my.cnf /etc/mysql/conf.d/my.cnf
 RUN rm -rf /var/lib/mysql/*
