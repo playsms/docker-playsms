@@ -14,8 +14,7 @@ playSMS is a Free and Open Source SMS Gateway Software. Not A Free SMS Service.
 Visit [playSMS](http://playsms.org) website for more information.
 
 
-Install
--------
+## Install
 
 Run this for installation, just the first time:
 
@@ -23,21 +22,11 @@ Run this for installation, just the first time:
 docker run -d -p 2222:22 -p 80:80 antonraharja/playsms
 ```
 	
-Or, run this to mount MySQL database to local `/opt/mysql/lib` instead:
+Or, run this to bind MySQL database with local `/opt/mysql/lib` instead:
 
 ```
 docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql antonraharja/playsms
 ```
-
-Or, run this if needed to also mount MySQL config to local `/opt/mysql/etc` too:
-
-```
-docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql -v /opt/mysql/etc:/etc/mysql antonraharja/playsms
-```
-
-
-Check Installation
-------------------
 
 Get `<CONTAINER_ID>` of your image:
 
@@ -68,8 +57,7 @@ Change the SSH password **immediately** to your own strong and secure password.
 The default SSH password for user `root` is `changemeplease`
 
 
-Usage and Operational
----------------------
+## Usage
 
 Start your container:
 
@@ -96,8 +84,7 @@ docker exec dce344 playsmsd check
 ```
 
 
-Build
------
+## Build
 
 To build the image `yourname/playsms`, execute the following command on the `docker-playsms` folder:
 
@@ -112,14 +99,12 @@ docker push yourname/playsms
 ```
 
 
-Maintainer
-----------
+## Maintainer
 
 - Anton Raharja <araharja@protonmail.com>
 
 
-References
-----------
+## References
 
 - https://github.com/tutumcloud/tutum-docker-lamp
 - https://github.com/tutumcloud/tutum-docker-wordpress
