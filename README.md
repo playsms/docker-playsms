@@ -19,13 +19,13 @@ Visit [playSMS](http://playsms.org) website for more information.
 Run this for installation, just the first time:
 
 ```
-docker run -d -p 2222:22 -p 80:80 antonraharja/playsms
+docker run -d -p 2222:22 -p 80:80 playsms/playsms
 ```
 	
 Or, run this to bind MySQL database with local `/opt/mysql/lib` instead:
 
 ```
-docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql antonraharja/playsms
+docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql playsms/playsms
 ```
 
 Get `<CONTAINER_ID>` of your image:
