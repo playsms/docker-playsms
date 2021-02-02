@@ -1,10 +1,11 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 MAINTAINER Anton Raharja <araharja@protonmail.com>
 ADD README.md /README.md
 
 # debs
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update && \
+	apt-get -y upgrade && \
 	apt-get -y install apt-utils && \
 	apt-get -y install supervisor git openssh-server pwgen apache2 libapache2-mod-php mariadb-server php php-cli php-mysql php-gd php-imap php-curl php-xml php-mbstring php-zip mc unzip
 
@@ -36,13 +37,13 @@ RUN rm -rf /var/lib/mysql/*
 # playsms
 ADD start-playsmsd.sh /start-playsmsd.sh
 ADD supervisord-playsmsd.conf /etc/supervisor/conf.d/supervisord-playsmsd.conf
-RUN rm -rf /app && mkdir /app && git clone --branch 1.4.3 --depth=1 https://github.com/antonraharja/playSMS.git /app
+RUN rm -rf /app && mkdir /app && git clone --branch 1.4.3 --depth=1 https://github.com/playsms/playsms.git /app
 ADD install.conf /app/install.conf
 ADD install.sh /install.sh
 
 # php
-ENV PHP_UPLOAD_MAX_FILESIZE 20M
-ENV PHP_POST_MAX_SIZE 20M
+ENV PHP_UPLOAD_MAX_FILESIZE 8M
+ENV PHP_POST_MAX_SIZE 8M
 
 # finalize scripts
 ADD run.sh /run.sh
