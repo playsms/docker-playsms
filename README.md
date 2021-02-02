@@ -26,13 +26,13 @@ docker run -d -p 2222:22 -p 80:80 antonraharja/playsms
 Or, run this to mount MySQL database to local `/opt/mysql/lib` instead:
 
 ```
-docker run -d -p 2222:22 -p 80:80 -v /var/lib/mysql:/opt/mysql/lib antonraharja/playsms
+docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql antonraharja/playsms
 ```
 
 Or, run this if needed to also mount MySQL config to local `/opt/mysql/etc` too:
 
 ```
-docker run -d -p 2222:22 -p 80:80 -v /var/lib/mysql:/opt/mysql/lib -v /etc/mysql:/opt/mysql/etc antonraharja/playsms
+docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql -v /opt/mysql/etc:/etc/mysql antonraharja/playsms
 ```
 
 
