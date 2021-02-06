@@ -43,7 +43,7 @@ docker logs -f <CONTAINER_ID>
 Once `sshd` runs, change the default SSH password, enter container:
 
 ```
-ssh -p 11022 root@localhost
+ssh -p 2222 root@localhost
 ```
 
 And then change `root` password:
