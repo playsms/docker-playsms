@@ -1,6 +1,6 @@
 playsms:
-  image: playsms/playsms
+  image: playsms/playsms:1.4.5
   ports:
-    - 11022:22
-    - 11080:80
-    - 11033:3306
+    - 10022:22
+    - 10080:80
+    - 13306:3306
