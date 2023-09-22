@@ -3,9 +3,9 @@ docker-playsms
 
 Item            | Info
 --------------- | ---------------
-Project update  | 210909
-Project version | 2.2
-playSMS version | 1.4.5
+Project update  | 230922
+Project version | 2.3
+playSMS version | 1.4.6
 
 This project is playSMS docker image project.
 
@@ -19,13 +19,13 @@ Visit [playSMS](http://playsms.org) website for more information.
 Run this for installation, just the first time:
 
 ```
-docker run -d -p 2222:22 -p 80:80 playsms/playsms:1.4.5
+docker run -d -p 2222:22 -p 80:80 playsms/playsms:1.4.6
 ```
 	
 Or, run this to bind MySQL database with local `/opt/mysql/lib` instead:
 
 ```
-docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql playsms/playsms:1.4.5
+docker run -d -p 2222:22 -p 80:80 -v /opt/mysql/lib:/var/lib/mysql playsms/playsms:1.4.6
 ```
 
 Get `<CONTAINER_ID>` of your image:
