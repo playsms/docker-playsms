@@ -5,9 +5,9 @@ ADD README.md /README.md
 # debs
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update
-RUN apt-get -y install apt-utils
 RUN apt-get -y upgrade
-RUN apt-get -y install supervisor git openssh-server pwgen apache2 libapache2-mod-php mariadb-server php php-cli php-mysql php-gd php-imap php-curl php-xml php-mbstring php-zip
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install apt-utils
+RUN DEBIAN_FRONTEND=noninteractive apt-get -yq install supervisor git openssh-server pwgen apache2 libapache2-mod-php mariadb-server php php-cli php-mysql php-gd php-imap php-curl php-xml php-mbstring php-zip
 
 # ssh
 ADD start-sshd.sh /start-sshd.sh
@@ -37,7 +37,7 @@ RUN rm -rf /var/lib/mysql/*
 # playsms
 ADD start-playsmsd.sh /start-playsmsd.sh
 ADD supervisord-playsmsd.conf /etc/supervisor/conf.d/supervisord-playsmsd.conf
-RUN rm -rf /app && mkdir /app && git clone --branch 1.4.6 --depth=1 https://github.com/playsms/playsms.git /app
+RUN rm -rf /app && mkdir /app && git clone --branch 1.4.7 --depth=1 https://github.com/playsms/playsms.git /app
 ADD install.conf /app/install.conf
 ADD install.sh /install.sh
 
