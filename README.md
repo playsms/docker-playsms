@@ -99,6 +99,31 @@ docker push yourname/playsms
 ```
 
 
+## Deploy to Google Cloud Run
+
+To deploy the application to Google Cloud Run, follow these steps:
+
+1. Build the container image:
+
+```
+docker build -t gcr.io/YOUR_PROJECT_ID/playsms:latest .
+```
+
+2. Push the container image to Google Container Registry:
+
+```
+docker push gcr.io/YOUR_PROJECT_ID/playsms:latest
+```
+
+3. Deploy the container image to Google Cloud Run:
+
+```
+gcloud run deploy playsms --image gcr.io/YOUR_PROJECT_ID/playsms:latest --platform managed --region YOUR_REGION --allow-unauthenticated
+```
+
+Replace `YOUR_PROJECT_ID` with your Google Cloud project ID and `YOUR_REGION` with your desired region.
+
+
 ## Maintainer
 
 - Anton Raharja <araharja@protonmail.com>
