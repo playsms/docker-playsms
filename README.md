@@ -60,7 +60,7 @@ passwd root
 
 Change the SSH password **immediately** to your own strong and secure password.
 
-The default SSH password for user `root` is `changemeplease`
+The default SSH password for user `root` is `Change-Me-Please`
 
 
 ## Usage
