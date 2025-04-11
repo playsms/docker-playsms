@@ -20,6 +20,11 @@ RET=1
 while [[ RET -ne 0 ]]; do
 	sleep 5
 	mysql -uroot -e "CREATE DATABASE $1"
+
+	echo "=> Creating database user $1"
+	mysql -uroot -e "CREATE USER '$1'@'localhost' IDENTIFIED BY 'password'" >/dev/null 2>&1 
+	mysql -uroot -e "GRANT ALL PRIVILEGES ON $1.* TO '$1'@'localhost' WITH GRANT OPTION" >/dev/null 2>&1 
+	mysql -uroot -e "FLUSH PRIVILEGES" >/dev/null 2>&1 
 	RET=$?
 done
 

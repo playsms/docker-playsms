@@ -1,0 +1,7 @@
+services:
+  playsms:
+    container_name: playsms
+    image: playsms/playsms:1.4.7
+    ports:
+      - 2222:22
+      - 443:443

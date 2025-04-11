@@ -15,7 +15,7 @@ done
 
 cd /app
 
-INSTALLCONF="./install.conf"
+INSTALLCONF="/install.conf"
 
 . $INSTALLCONF
 
@@ -149,7 +149,7 @@ sed -i "s/#DBPASS#/$DBPASS/g" $PATHWEB/config.php
 echo -n .
 sed -i "s|#PATHLOG#|$PATHLOG|g" $PATHWEB/config.php
 echo -n .
-chown -R $WEBSERVERUSER.$WEBSERVERGROUP $PATHWEB $PATHLIB $PATHLOG
+chown $WEBSERVERUSER:$WEBSERVERGROUP -R $PATHWEB $PATHLIB $PATHLOG
 echo -n .
 mkdir -p /etc $PATHBIN
 echo -n .
