@@ -4,8 +4,8 @@ docker-playsms
 Item            | Info
 --------------- | ---------------
 Project update  | 250412
-Project version | 2.4
-playSMS version | 1.4.7
+Project version | 3.0
+playSMS version | 1.4.8-2504120000
 
 This project is playSMS docker image project.
 
@@ -14,103 +14,29 @@ playSMS is a Free and Open Source SMS Gateway Software. Not A Free SMS Service.
 Visit [playSMS](http://playsms.org) website for more information.
 
 
-## Install
+## Install/Usage
 
-Run this:
-
-```
-docker compose up -d
-```
-
-Or:
+First, create `.env` by copying from `.env.example`:
 
 ```
-docker run -d -p 2222:22 -p 443:443 playsms/playsms:1.4.7
-```
-	
-Or, run this to bind MySQL database with local `/opt/mysql/lib` instead:
-
-```
-docker run -d -p 2222:22 -p 443:443 -v /opt/mysql/lib:/var/lib/mysql playsms/playsms:1.4.7
+cp .env.example .env
 ```
 
-Get `<CONTAINER_ID>` of your image:
+To install and then use it, run this:
 
 ```
-docker ps -l
+docker compose up
 ```
 
-Follow logs:
+If you need to build your own image edit the image name in `.env`
+
+For example, set `PLAYSMS_DOCKER_IMAGE="anyusername/anyimagename:anytag"` in `.env`, and then build it:
 
 ```
-docker logs -f <CONTAINER_ID>
-```
-
-Once `sshd` runs, change the default SSH password, enter container:
-
-```
-ssh -p 2222 root@localhost
-```
-
-And then change `root` password:
-
-```
-passwd root
-```
-
-Change the SSH password **immediately** to your own strong and secure password.
-
-The default SSH password for user `root` is `Change-Me-Please`
-
-
-## Usage
-
-Start your container:
-
-```
-docker start <CONTAINER_ID>
-```
-
-Stop your container:
-
-```
-docker stop <CONTAINER_ID>
-```
-
-Running command inside the container:
-
-```
-docker exec <CONTAINER_ID> <COMMAND>
-```
-
-Example of running command `playsmsd check` on `CONTAINER_ID` `dce344`:
-
-```
-docker exec dce344 playsmsd check
-```
-
-
-## Build
-
-To build the image `yourname/playsms`, execute the following command on the `docker-playsms` folder:
-
-```
-docker build -t yourname/playsms .
-```
-
-Push your new image to the docker hub:
-
-```
-docker push yourname/playsms
+docker compose build
 ```
 
 
 ## Maintainer
 
 - Anton Raharja <araharja@protonmail.com>
-
-
-## References
-
-- https://github.com/tutumcloud/tutum-docker-lamp
-- https://github.com/tutumcloud/tutum-docker-wordpress
