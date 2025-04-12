@@ -1,7 +1,62 @@
 services:
+
   playsms:
-    container_name: playsms
-    image: playsms/playsms:1.4.7
+    image: ${PLAYSMS_DOCKER_IMAGE}
+    build:
+      dockerfile: Dockerfile
+      args:
+        - PLAYSMS_VERSION=${PLAYSMS_VERSION}
+        - PLAYSMS_DB_NAME=${PLAYSMS_DB_NAME}
+        - PLAYSMS_DB_USER=${PLAYSMS_DB_USER}
+        - PLAYSMS_DB_PASS=${PLAYSMS_DB_PASS}
+        - PLAYSMS_DB_HOST=${PLAYSMS_DB_HOST}
+        - PLAYSMS_DB_PORT=${PLAYSMS_DB_PORT}
+    environment:
+      - PLAYSMS_VERSION=${PLAYSMS_VERSION}
+      - PLAYSMS_DB_NAME=${PLAYSMS_DB_NAME}
+      - PLAYSMS_DB_USER=${PLAYSMS_DB_USER}
+      - PLAYSMS_DB_PASS=${PLAYSMS_DB_PASS}
+      - PLAYSMS_DB_HOST=${PLAYSMS_DB_HOST}
+      - PLAYSMS_DB_PORT=${PLAYSMS_DB_PORT}
+    volumes:
+      - playsms_web:/var/www/html
+      - playsms_log:/var/log/playsms
+    networks:
+      - playsms-network
+
+  nginx:
+    image: nginx:1.26
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+      - playsms_web:/var/www/html
+    depends_on:
+      - playsms
+    networks:
+      - playsms-network
     ports:
-      - 2222:22
-      - 443:443
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:10.11
+    environment:
+      MYSQL_ROOT_PASSWORD: MARIADB_RANDOM_ROOT_PASSWORD
+      MYSQL_DATABASE: ${PLAYSMS_DB_NAME}
+      MYSQL_USER: ${PLAYSMS_DB_USER}
+      MYSQL_PASSWORD: ${PLAYSMS_DB_PASS}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - playsms-network
+    restart: unless-stopped
+
+networks:
+  playsms-network:
+    driver: bridge
+
+volumes:
+  playsms_web:
+  playsms_log:
+  mariadb_data:
