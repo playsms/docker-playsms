@@ -1,6 +1,5 @@
-# /nginx/conf.d/default.conf
 server {
-    listen 80;
+    listen ${NGINX_HTTP_PORT};
     server_name localhost;
     
     # Redirect all HTTP traffic to HTTPS
@@ -8,7 +7,7 @@ server {
 }
 
 server {
-    listen 443 ssl;
+    listen ${NGINX_HTTPS_PORT} ssl;
     server_name localhost;
     
     ssl_certificate /etc/nginx/ssl/nginx.crt;
@@ -27,7 +26,7 @@ server {
     }
     
     location ~ \.php$ {
-        fastcgi_pass playsms:19000;
+        fastcgi_pass playsms:${PHP_FPM_PORT};
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;

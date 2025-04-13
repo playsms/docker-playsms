@@ -1,33 +1,45 @@
 services:
+  mariadb:
+    image: ${DOCKER_IMAGE_MARIADB}
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
+      MARIADB_DATABASE: ${PLAYSMS_DB_NAME}
+      MARIADB_USER: ${PLAYSMS_DB_USER}
+      MARIADB_PASSWORD: ${PLAYSMS_DB_PASS}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - playsms-network
+    restart: unless-stopped
 
   playsms:
-    image: ${PLAYSMS_DOCKER_IMAGE}
-    build:
-      dockerfile: Dockerfile
-      args:
-        - PLAYSMS_VERSION=${PLAYSMS_VERSION}
-        - PLAYSMS_DB_NAME=${PLAYSMS_DB_NAME}
-        - PLAYSMS_DB_USER=${PLAYSMS_DB_USER}
-        - PLAYSMS_DB_PASS=${PLAYSMS_DB_PASS}
-        - PLAYSMS_DB_HOST=${PLAYSMS_DB_HOST}
-        - PLAYSMS_DB_PORT=${PLAYSMS_DB_PORT}
-    environment:
+    image: ${DOCKER_IMAGE_PLAYSMS}
+    environment: &playsms_vars
       - PLAYSMS_VERSION=${PLAYSMS_VERSION}
       - PLAYSMS_DB_NAME=${PLAYSMS_DB_NAME}
       - PLAYSMS_DB_USER=${PLAYSMS_DB_USER}
       - PLAYSMS_DB_PASS=${PLAYSMS_DB_PASS}
       - PLAYSMS_DB_HOST=${PLAYSMS_DB_HOST}
       - PLAYSMS_DB_PORT=${PLAYSMS_DB_PORT}
+      - PHP_FPM_PORT=${PHP_FPM_PORT}
+    build:
+      dockerfile: Dockerfile
+      args: *playsms_vars
     volumes:
       - playsms_web:/var/www/html
-      - playsms_log:/var/log/playsms
+    depends_on:
+      - mariadb
     networks:
       - playsms-network
 
   nginx:
-    image: nginx:1.26
+    image: ${DOCKER_IMAGE_NGINX}
+    environment:
+      - NGINX_HTTP_PORT=${NGINX_HTTP_PORT}
+      - NGINX_HTTPS_PORT=${NGINX_HTTPS_PORT}
+      - PHP_FPM_PORT=${PHP_FPM_PORT}
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/templates:/etc/nginx/templates
       - ./nginx/ssl:/etc/nginx/ssl
       - playsms_web:/var/www/html
     depends_on:
@@ -35,21 +47,8 @@ services:
     networks:
       - playsms-network
     ports:
-      - "80:80"
-      - "443:443"
-    restart: unless-stopped
-
-  mariadb:
-    image: mariadb:10.11
-    environment:
-      MYSQL_ROOT_PASSWORD: MARIADB_RANDOM_ROOT_PASSWORD
-      MYSQL_DATABASE: ${PLAYSMS_DB_NAME}
-      MYSQL_USER: ${PLAYSMS_DB_USER}
-      MYSQL_PASSWORD: ${PLAYSMS_DB_PASS}
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    networks:
-      - playsms-network
+      - "${NGINX_HTTP_PORT}:${NGINX_HTTP_PORT}"
+      - "${NGINX_HTTPS_PORT}:${NGINX_HTTPS_PORT}"
     restart: unless-stopped
 
 networks:
@@ -58,5 +57,4 @@ networks:
 
 volumes:
   playsms_web:
-  playsms_log:
   mariadb_data:
