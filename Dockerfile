@@ -9,7 +9,7 @@ ARG PLAYSMS_DB_HOST
 ARG PLAYSMS_DB_PORT
 ARG PHP_FPM_PORT
 
-RUN groupadd -r playsms && useradd -g playsms playsms
+RUN addgroup -S playsms && adduser -S playsms -G playsms
 
 USER playsms
 
