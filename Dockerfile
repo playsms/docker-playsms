@@ -1,4 +1,4 @@
-FROM alipne:latest
+FROM alpine:latest
 LABEL org.playsms.image.authors="araharja@protonmail.com"
 
 ARG PLAYSMS_VERSION

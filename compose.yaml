@@ -23,6 +23,7 @@ services:
       - PLAYSMS_DB_PORT=${PLAYSMS_DB_PORT}
       - PHP_FPM_PORT=${PHP_FPM_PORT}
     build:
+      context: .
       dockerfile: Dockerfile
       args: *playsms_vars
     volumes:
