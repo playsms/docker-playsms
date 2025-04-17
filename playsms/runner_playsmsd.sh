@@ -1,8 +1,13 @@
-#!/bin/bash
+#!/bin/ash
 
 while true; do
-    if ! ps ax | grep -v grep | grep -q "playsmsd.conf"; then
-	    su - playsms -c "/usr/local/bin/playsmsd start >/dev/null 2>&1"
+	if ! ps ax | grep -v grep | grep -q "playsmsd.conf"; then
+		/home/playsms/bin/playsmsd /home/playsms/etc/playsmsd.conf start
+		
+		sleep 2
+		
+		/home/playsms/bin/playsmsd /home/playsms/etc/playsmsd.conf check
 	fi
-    sleep 5
+	
+	sleep 5
 done

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/ash
 
 INSTALLCONF="./install.conf"
 
@@ -146,11 +146,11 @@ fi
 echo "INSTALL DATA:"
 echo
 
-echo "MySQL username      = $DBUSER"
-echo "MySQL password      = $DBPASS"
-echo "MySQL database      = $DBNAME"
-echo "MySQL host          = $DBHOST"
-echo "MySQL port          = $DBPORT"
+echo "MySQL username      = $MYSQL_USER"
+echo "MySQL password      = $MYSQL_PWD"
+echo "MySQL database      = $MYSQL_DBNAME"
+echo "MySQL host          = $MYSQL_HOST"
+echo "MySQL port          = $MYSQL_TCP_PORT"
 echo
 echo "Web server user     = $WEBSERVERUSER"
 echo "Web server group    = $WEBSERVERGROUP"
@@ -217,84 +217,44 @@ echo
 echo "=================================================================="
 echo
 
-sleep 3
-
-echo "Getting composer from https://getcomposer.com"
-echo
-echo "Please wait while the install script downloading composer"
-echo
-
-php -r "readfile('https://getcomposer.org/installer');" | php >/dev/null 2>&1
-
-if [ -e "./composer.phar" ]; then
-	#rm -f /usr/local/bin/composer /usr/local/bin/composer.phar >/dev/null 2>&1
-	rm -f ./composer >/dev/null 2>&1
-	ln -s ./composer.phar ./composer >/dev/null 2>&1
-	#mv composer composer.phar /usr/local/bin/ >/dev/null 2>&1
-	#chmod +x /usr/local/bin/composer /usr/local/bin/composer.phar >/dev/null 2>&1
-	chmod +x ./composer.phar >/dev/null 2>&1
-
-	echo "Composer is ready in this folder"
-	echo
-	echo "Pleas wait while composer getting and updating required packages"
-	echo
-
-	if [ -x "./composer.phar" ]; then
-		./composer.phar update
-	else
-		echo "ERROR: unable to get composer from https://getcomposer.com"
-		echo
-		exit 1
-	fi
-
-	echo
-	echo "Composer has been installed and packages has been updated"
-	echo
-else
-	echo "ERROR: unable to get composer from https://getcomposer.com"
-	echo
-	exit 1
-fi
-
-sleep 3
-
 echo -n "Start"
 set -e
 echo -n .
-mkdir -p $PATHWEB $PATHLIB $PATHLOG
+#mkdir -p $PATHWEB $PATHLIB $PATHLOG
 echo -n .
-cp -rf web/* $PATHWEB
+#cp -rf web/* $PATHWEB
 set +e
 echo -n .
-mysqladmin -u $DBUSER -p$DBPASS -h $DBHOST -P $DBPORT create $DBNAME >/dev/null 2>&1
+## TODO check with only dbname
+mysqladmin -u $MYSQL_USER -p$MYSQL_PWD -h $MYSQL_HOST -P $MYSQL_TCP_PORT create $MYSQL_DBNAME >/dev/null 2>&1
 set -e
 echo -n .
-mysql -u $DBUSER -p$DBPASS -h $DBHOST -P $DBPORT $DBNAME < db/playsms.sql >/dev/null 2>&1
+## TODO check with only dbname
+mysql -u $MYSQL_USER -p$MYSQL_PWD -h $MYSQL_HOST -P $MYSQL_TCP_PORT $MYSQL_DBNAME < db/playsms.sql >/dev/null 2>&1
 echo -n .
-cp $PATHWEB/config-dist.php $PATHWEB/config.php
+#cp $PATHWEB/config-dist.php $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBHOST#/$DBHOST/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_HOST#/$MYSQL_HOST/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBPORT#/$DBPORT/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_TCP_PORT#/$MYSQL_TCP_PORT/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBNAME#/$DBNAME/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_DBNAME#/$MYSQL_DBNAME/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBUSER#/$DBUSER/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_USER#/$MYSQL_USER/g" $PATHWEB/config.php
 echo -n .
-sed -i "s/#DBPASS#/$DBPASS/g" $PATHWEB/config.php
+sed -i "s/#MYSQL_PWD#/$MYSQL_PWD/g" $PATHWEB/config.php
 echo -n .
 sed -i "s|#PATHLOG#|$PATHLOG|g" $PATHWEB/config.php
 echo -n .
 
 if [ "$USERID" = "0" ]; then
-	chown $WEBSERVERUSER:$WEBSERVERGROUP -R $PATHWEB $PATHLIB $PATHLOG
-	chmod 0775 -R $PATHWEB $PATHLIB $PATHLOG
+	chown -R $WEBSERVERUSER.$WEBSERVERGROUP $PATHWEB $PATHLIB $PATHLOG
 	echo -n .
 fi
 
 mkdir -p $PATHCONF $PATHBIN
 echo -n .
-touch $PATHCONF/playsmsd.conf
+#touch $PATHCONF/playsmsd.conf
 echo -n .
 echo "PLAYSMS_PATH=\"$PATHWEB\"" > $PATHCONF/playsmsd.conf
 echo "PLAYSMS_LIB=\"$PATHLIB\"" >> $PATHCONF/playsmsd.conf
@@ -302,20 +262,20 @@ echo "PLAYSMS_BIN=\"$PATHBIN\"" >> $PATHCONF/playsmsd.conf
 echo "PLAYSMS_LOG=\"$PATHLOG\"" >> $PATHCONF/playsmsd.conf
 echo "DAEMON_SLEEP=\"1\"" >> $PATHCONF/playsmsd.conf
 echo "ERROR_REPORTING=\"E_ALL ^ (E_NOTICE | E_WARNING)\"" >> $PATHCONF/playsmsd.conf
-chmod 644 $PATHCONF/playsmsd.conf
+#chmod 644 $PATHCONF/playsmsd.conf
 echo -n .
-cp -rR daemon/linux/bin/playsmsd.php $PATHBIN/playsmsd
-chmod 755 $PATHBIN/playsmsd
+#cp -rR daemon/linux/bin/playsmsd.php $PATHBIN/playsmsd
+#chmod 755 $PATHBIN/playsmsd
 echo -n .
 echo "end"
 echo
-su - playsms -c "$PATHBIN/playsmsd $PATHCONF/playsmsd.conf check"
+$PATHBIN/playsmsd $PATHCONF/playsmsd.conf check
 sleep 3
 echo
-su - playsms -c "$PATHBIN/playsmsd $PATHCONF/playsmsd.conf start"
+$PATHBIN/playsmsd $PATHCONF/playsmsd.conf start
 sleep 3
 echo
-su - playsms -c "$PATHBIN/playsmsd $PATHCONF/playsmsd.conf status"
+$PATHBIN/playsmsd $PATHCONF/playsmsd.conf status
 sleep 3
 echo
 
@@ -330,7 +290,7 @@ echo "- To stop it  : playsmsd $PATHCONF/playsmsd.conf stop"
 echo "- To check it : playsmsd $PATHCONF/playsmsd.conf check"
 echo
 
-cp install.conf install.conf.backup >/dev/null 2>&1
+#cp install.conf install.conf.backup >/dev/null 2>&1
 
 echo
 echo

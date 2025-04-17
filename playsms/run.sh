@@ -1,17 +1,17 @@
 #!/bin/ash
 
-export TERM=xterm-256color
-
 CWD=$(pwd)
 
-cd /app
+cd /home/playsms/src
 
-[ -x ./docker-setup.sh ] && ./docker-setup.sh
-
-[ -e ./docker-setup.sh ] && mv docker-setup.sh backup.docker-setup.sh
+[ -x ./install-playsms.sh ] && 
+./install-playsms.sh -y && 
+[ -e ./install-playsms.sh ] && 
+mv install-playsms.sh install-playsms.sh.backup
+mv install.conf install.conf.backup
 
 cd $CWD
 
-exec supervisord -c /etc/supervisor.conf
+nohup /runner_php-fpm.sh &
 
-exit 0
+exec /runner_playsmsd.sh

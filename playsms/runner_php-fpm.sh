@@ -1,3 +1,8 @@
-#!/bin/bash
+#!/bin/ash
 
-exec php-fpm8.3 -F
+while true; do
+    if ! ps ax | grep -v grep | grep -q "php-fpm83"; then
+	    php-fpm83 -F
+	fi
+    sleep 5
+done
