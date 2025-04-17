@@ -35,9 +35,7 @@ RUN rm -rf /home/playsms && \
     cp -f /home/playsms/src/daemon/linux/bin/playsmsd.php /home/playsms/bin/playsmsd && \
     ln -s /home/playsms/bin/playsmsd /usr/local/bin/playsmsd && \
     mkdir -p /var/www && \
-    ln -s /home/playsms/web /var/www/html && \
-    chown -R playsms:playsms /etc/playsmsd.conf /home/playsms && \
-    chmod -R 0777 /home/playsms /var/log /var/www /tmp
+    ln -s /home/playsms/web /var/www/html
 
 COPY /playsms/supervisor.conf /etc/supervisor.conf
 COPY /playsms/run.sh /run.sh
@@ -46,7 +44,10 @@ COPY /playsms/runner_playsmsd.sh /runner_playsmsd.sh
 COPY /playsms/install-playsms.sh /home/playsms/src/install-playsms.sh
 COPY /playsms/install.conf /home/playsms/src/install.conf
 
-RUN chmod 0755 /home/playsms/src/install-playsms.sh /run.sh /runner_php-fpm.sh /runner_playsmsd.sh
+RUN chmod 0755 /home/playsms/src/install-playsms.sh /run.sh /runner_php-fpm.sh /runner_playsmsd.sh && \
+    chmod 0644 /home/playsms/src/install.conf && \
+    chown -R playsms:playsms /etc/playsmsd.conf /home/playsms && \
+    chmod -R 0777 /home/playsms /var/log /var/www /tmp
 
 USER playsms
 
