@@ -74,4 +74,7 @@ docker compose build
 
 ## Maintainer
 
-- Anton Raharja <araharja@protonmail.com>
+Anton Raharja <araharja@protonmail.com>
+
+View contributors [here](https://github.com/playsms/docker-playsms/graphs/contributors)
+
