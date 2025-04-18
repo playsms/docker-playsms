@@ -65,6 +65,8 @@ Run it and leave it:
 docker compose up -d
 ```
 
+Volumes mounted to `_vol` folder.
+
 
 ## Build
 
