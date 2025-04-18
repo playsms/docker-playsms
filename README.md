@@ -3,8 +3,8 @@ docker-playsms
 
 Item            | Info
 --------------- | ---------------
-Project update  | 250417
-Project version | 3.2
+Project update  | 250419
+Project version | 3.3
 playSMS version | [1.4.x](https://github.com/playsms/playsms)
 
 This project is playSMS docker image project.
@@ -34,9 +34,11 @@ PLAYSMS_VERSION="1.4.x"
 
 PLAYSMS_DB_NAME="playsms"
 PLAYSMS_DB_USER="playsms"
-PLAYSMS_DB_PASS="my_own_strong_password"
+PLAYSMS_DB_PASS="playsms"
 PLAYSMS_DB_HOST="mariadb"
 PLAYSMS_DB_PORT=3306
+
+PLAYSMS_CONTAINER_TIMEZONE="Asia/Jakarta"
 
 DOCKER_IMAGE_PLAYSMS="playsms/playsms:1.4.x"
 DOCKER_IMAGE_NGINX="nginx:stable-alpine"
@@ -45,6 +47,9 @@ DOCKER_IMAGE_MARIADB="mariadb:lts"
 WEBSERVER_SERVER_NAME="localhost"
 WEBSERVER_HTTP_PORT=80
 WEBSERVER_HTTPS_PORT=443
+
+GID=19191
+UID=19191
 ```
 
 Change playSMS DB password at least, and save it. The DB host should be `mariadb` unless you've changed it in [compose.yaml](https://github.com/playsms/docker-playsms/blob/master/compose.yaml).
