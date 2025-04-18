@@ -6,59 +6,83 @@ services:
       MARIADB_DATABASE: ${PLAYSMS_DB_NAME}
       MARIADB_USER: ${PLAYSMS_DB_USER}
       MARIADB_PASSWORD: ${PLAYSMS_DB_PASS}
+      TZ: ${PLAYSMS_CONTAINER_TIMEZONE}
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - ./_vol/mysql/data:/var/lib/mysql
     networks:
       - playsms-network
-    restart: unless-stopped
-
-  nginx:
-    image: ${DOCKER_IMAGE_NGINX}
-    environment:
-      - WEBSERVER_SERVER_NAME=${WEBSERVER_SERVER_NAME}
-      - WEBSERVER_HTTP_PORT=${WEBSERVER_HTTP_PORT}
-      - WEBSERVER_HTTPS_PORT=${WEBSERVER_HTTPS_PORT}
-    volumes:
-      - ./nginx/templates:/etc/nginx/templates
-      - ./nginx/ssl:/etc/nginx/ssl
-      - playsms_web:/var/www/html
-    depends_on:
-      - mariadb
-    networks:
-      - playsms-network
-    ports:
-      - "${WEBSERVER_HTTP_PORT}:80"
-      - "${WEBSERVER_HTTPS_PORT}:443"
-    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 8s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    restart:
+      unless-stopped
 
   playsms:
     image: ${DOCKER_IMAGE_PLAYSMS}
     environment: &playsms_vars
-      - PLAYSMS_VERSION=${PLAYSMS_VERSION}
-      - PLAYSMS_DB_NAME=${PLAYSMS_DB_NAME}
-      - PLAYSMS_DB_USER=${PLAYSMS_DB_USER}
-      - PLAYSMS_DB_PASS=${PLAYSMS_DB_PASS}
-      - PLAYSMS_DB_HOST=${PLAYSMS_DB_HOST}
-      - PLAYSMS_DB_PORT=${PLAYSMS_DB_PORT}
+      GID: ${GID}
+      UID: ${UID}
+      PLAYSMS_VERSION: ${PLAYSMS_VERSION}
+      PLAYSMS_DB_NAME: ${PLAYSMS_DB_NAME}
+      PLAYSMS_DB_USER: ${PLAYSMS_DB_USER}
+      PLAYSMS_DB_PASS: ${PLAYSMS_DB_PASS}
+      PLAYSMS_DB_HOST: ${PLAYSMS_DB_HOST}
+      PLAYSMS_DB_PORT: ${PLAYSMS_DB_PORT}
+      TZ: ${PLAYSMS_CONTAINER_TIMEZONE}
     build:
       context: .
       dockerfile: Dockerfile
       args: *playsms_vars
     volumes:
-      - playsms_log:/home/playsms/log
-      - playsms_web:/home/playsms/web
+      - ./_vol/playsms/log:/home/playsms/log
+      - ./_vol/playsms/web:/home/playsms/web
     depends_on:
-      - nginx
-      - mariadb
+      mariadb:
+        condition: service_healthy
     networks:
       - playsms-network
-    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      start_period: 8s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart:
+      unless-stopped
+
+  nginx:
+    image: ${DOCKER_IMAGE_NGINX}
+    environment:
+      WEBSERVER_SERVER_NAME: ${WEBSERVER_SERVER_NAME}
+      WEBSERVER_HTTP_PORT: ${WEBSERVER_HTTP_PORT}
+      WEBSERVER_HTTPS_PORT: ${WEBSERVER_HTTPS_PORT}
+      TZ: ${PLAYSMS_CONTAINER_TIMEZONE}
+    volumes:
+      - ./_vol/nginx/templates:/etc/nginx/templates
+      - ./_vol/nginx/ssl:/etc/nginx/ssl
+      - ./_vol/playsms/web:/var/www/html
+    depends_on:
+      mariadb:
+        condition: service_healthy      
+      playsms:
+        condition: service_healthy      
+    networks:
+      - playsms-network
+    ports:
+      - "${WEBSERVER_HTTP_PORT}:80"
+      - "${WEBSERVER_HTTPS_PORT}:443"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://${WEBSERVER_SERVER_NAME}"]
+      start_period: 8s
+      interval: 1m30s
+      timeout: 8s
+      retries: 3
+    restart:
+      unless-stopped
 
 networks:
   playsms-network:
     driver: bridge
-
-volumes:
-  playsms_web:
-  playsms_log:
-  mariadb_data:

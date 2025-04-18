@@ -1,2 +1,4 @@
 .env
 volumes/
+_vol/mysql/
+_vol/playsms/

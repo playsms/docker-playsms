@@ -1,17 +1,48 @@
 #!/bin/ash
 
-CWD=$(pwd)
+cd /home/playsms
 
-cd /home/playsms/src
+run_it()
+{
+	if [ -e .installed ] && [ -e bin/playsmsd ] && [ -e etc/playsmsd.conf ] && [ -e web/index.php ]; then
+		echo "playSMS has been installed properly"
+		echo
+		echo "Let's GO !"
+		echo
 
-[ -x ./install-playsms.sh ] && 
-./install-playsms.sh -y && 
-[ -e ./install-playsms.sh ] && 
-mv install-playsms.sh install-playsms.sh.backup
-mv install.conf install.conf.backup
+		nohup /runner_php-fpm.sh &
+		exec /runner_playsmsd.sh
 
-cd $CWD
+		echo "ERROR: Something's wrong exiting..."
 
-nohup /runner_php-fpm.sh &
+		exit 1
+	fi
+}
 
-exec /runner_playsmsd.sh
+run_it
+
+echo "playSMS installation starts"
+echo
+
+rm -f .installed
+
+[ -e /_docker-setup.conf ] && cp /_docker-setup.conf docker-setup.conf
+
+[ -e /_docker-setup.sh ] && cp /_docker-setup.sh docker-setup.sh && chmod +x docker-setup.sh
+
+[ -e docker-setup.sh ] && ./docker-setup.sh docker-setup.conf
+
+if [ -e bin/playsmsd ] && [ -e etc/playsmsd.conf ] && [ -e web/index.php ]; then
+	echo
+	echo "ALL GOOD"
+	echo
+	
+	touch .installed
+fi
+
+echo "playSMS installation ends"
+echo
+
+run_it
+
+exit 2
