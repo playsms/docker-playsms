@@ -23,9 +23,6 @@ echo "MySQL database      = $MYSQL_DBNAME"
 echo "MySQL host          = $MYSQL_HOST"
 echo "MySQL port          = $MYSQL_TCP_PORT"
 echo
-echo "Web server user     = $WEBSERVERUSER"
-echo "Web server group    = $WEBSERVERGROUP"
-echo
 echo "playSMS source path = $PATHSRC"
 echo
 echo "playSMS web path    = $PATHWEB"
@@ -73,24 +70,20 @@ echo
 FRESH_INSTALL=0
 SQL_FILE="$PATHSRC/db/playsms.sql"
 if echo "SELECT uid FROM playsms_tblUser WHERE status=2;" | mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} ${MYSQL_DBNAME} &>/dev/null; then
-	echo "Database ${MYSQL_DBNAME} ALREADY EXISTS."
-	echo "Database configuration skipped and installation process will continue."
+	echo "Database already exists."
+	echo "Importing data skipped and installation process will continue."
 else
-	if echo "CREATE DATABASE ${MYSQL_DBNAME};" | mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} &>/dev/null; then
-		echo "This is a new installation."
-		echo "Database ${MYSQL_DBNAME} created."		
-	else
-		echo "Failed to create database ${MYSQL_DBNAME}."
-		echo "Database ${MYSQL_DBNAME} may be already exists."
-	fi
-	echo "Importing data from ${SQL_FILE}..."
+	echo "CREATE DATABASE ${MYSQL_DBNAME};" | mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} &>/dev/null
+	echo "Importing data to database..."
 	if mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} ${MYSQL_DBNAME} < ${SQL_FILE} &>/dev/null; then
-		echo "Database has been installed successfully."		
+		echo "Database has been installed successfully."
 		FRESH_INSTALL=1
 	else
 		echo "ERROR: Failed to import data from ${SQL_FILE} to database ${MYSQL_DBNAME}."
 		echo 
-		echo "But installation process will still continue."
+		echo "Installation process will continue but you may have a broken system."
+		echo 
+		echo "Make sure database related configuration are all good before trying again."
 	fi
 fi
 echo
