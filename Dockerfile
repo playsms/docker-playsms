@@ -9,6 +9,7 @@ ARG PLAYSMS_DB_USER
 ARG PLAYSMS_DB_PASS
 ARG PLAYSMS_DB_HOST
 ARG PLAYSMS_DB_PORT
+ARG TZ
 
 RUN addgroup -g ${GID} -S playsms && \
     adduser -D -u ${UID} -G playsms -S playsms
@@ -18,15 +19,17 @@ RUN apk update && apk upgrade && \
         ca-certificates supervisor git unzip curl mariadb-client mc icu-data-full gettext lang gettext-lang tzdata \
         php83-fpm php83-cli php83-phar php83-ctype php83-mysqli php83-mysqlnd php83-pdo php83-pdo_mysql php83-pdo_sqlite \
         php83-gd php83-curl php83-imap php83-zip php83-xml php83-xmlreader php83-xmlwriter php83-json php83-tokenizer \
-        php83-session php83-gettext php83-mbstring php83-pcntl php83-fileinfo php83-dom php83-intl php83-pecl-redis && \
+        php83-session php83-gettext php83-mbstring php83-pcntl php83-fileinfo php83-dom php83-intl php83-pecl-redis \
+        php83-simplexml php83-ftp php83-posix php83-shmop php83-sodium php83-sockets php83-sysvmsg php83-sysvsem \
+        php83-sysvshm php83-xsl php83-sqlite3 && \
     rm -rf /tmp/* /var/cache/apk/*
 
 RUN sed -i /etc/php83/php-fpm.d/www.conf -e 's/^listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/' && \
     sed -i /etc/php83/php-fpm.d/www.conf -e 's/^user = nobody/;user = nobody/' && \
-    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^group = nobody/;group = nobody/'
+    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^group = nobody/;group = nobody/' && \
+    sed -i /etc/php83/php.ini -e 's/^display_errors = Off/display_errors = On/' && \
+    sed -i /etc/php83/php.ini -e "s#^;date.timezone =#date.timezone = ${TZ}#"
     
-    # sed -i /etc/php83/php.ini -e 's/^display_errors = Off/display_errors = On/'
-
 RUN rm -rf /home/playsms && mkdir -p /home/playsms && chown playsms:playsms -R /home/playsms && chmod 0755 /home/playsms && \
     rm -rf /var/www && mkdir -p /var/www && chown playsms:playsms -R /var/www && chmod 0755 /var/www && \
     echo 'export "PATH=$PATH:/home/playsms/bin:/home/playsms/etc"' > /home/playsms/.profile
