@@ -1,11 +1,16 @@
 #!/bin/ash
 
-if [ ! -e "$1" ]; then
-	echo "ERROR: playSMS installation config file is missing, exiting..."
-	exit 1
-fi
-
-source $1
+MYSQL_USER=$PLAYSMS_DB_USER
+MYSQL_PWD=$PLAYSMS_DB_PASS
+MYSQL_DBNAME=$PLAYSMS_DB_NAME
+MYSQL_HOST=$PLAYSMS_DB_HOST
+MYSQL_TCP_PORT=$PLAYSMS_DB_PORT
+PATHSRC="/home/playsms/src"
+PATHWEB="/home/playsms/web"
+PATHLIB="/home/playsms/lib"
+PATHBIN="/home/playsms/bin"
+PATHLOG="/home/playsms/log"
+PATHCONF="/home/playsms/etc"
 
 echo
 echo "=================================================================="

@@ -26,11 +26,9 @@ echo
 
 rm -f .installed
 
-[ -e /_docker-setup.conf ] && cp /_docker-setup.conf docker-setup.conf
-
 [ -e /_docker-setup.sh ] && cp /_docker-setup.sh docker-setup.sh && chmod +x docker-setup.sh
 
-[ -e docker-setup.sh ] && ./docker-setup.sh docker-setup.conf
+[ -e docker-setup.sh ] && ./docker-setup.sh
 
 if [ -e bin/playsmsd ] && [ -e etc/playsmsd.conf ] && [ -e web/index.php ]; then
 	echo
