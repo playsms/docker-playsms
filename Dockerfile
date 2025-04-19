@@ -1,15 +1,16 @@
-FROM alpine:latest
+FROM alpine:3.21
 LABEL org.playsms.image.authors="araharja@protonmail.com"
 
 ARG GID
 ARG UID
+ARG TZ
 ARG PLAYSMS_VERSION
 ARG PLAYSMS_DB_NAME
 ARG PLAYSMS_DB_USER
 ARG PLAYSMS_DB_PASS
 ARG PLAYSMS_DB_HOST
 ARG PLAYSMS_DB_PORT
-ARG TZ
+ARG WEB_ADMIN_PASSWORD
 
 RUN addgroup -g ${GID} -S playsms && \
     adduser -D -u ${UID} -G playsms -S playsms
@@ -32,7 +33,7 @@ RUN sed -i /etc/php83/php-fpm.d/www.conf -e 's/^listen = 127.0.0.1:9000/listen =
     
 RUN rm -rf /home/playsms && mkdir -p /home/playsms && chown playsms:playsms -R /home/playsms && chmod 0755 /home/playsms && \
     rm -rf /var/www && mkdir -p /var/www && chown playsms:playsms -R /var/www && chmod 0755 /var/www && \
-    echo 'export "PATH=$PATH:/home/playsms/bin:/home/playsms/etc"' > /home/playsms/.profile
+    echo 'export PATH=$PATH:/home/playsms/bin' > /home/playsms/.profile
 
 COPY /playsms/supervisor.conf /etc/supervisor.conf
 COPY /playsms/run.sh /run.sh

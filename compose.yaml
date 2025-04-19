@@ -25,13 +25,14 @@ services:
     environment: &playsms_vars
       GID: ${GID}
       UID: ${UID}
+      TZ: ${PLAYSMS_CONTAINER_TIMEZONE}
       PLAYSMS_VERSION: ${PLAYSMS_VERSION}
       PLAYSMS_DB_NAME: ${PLAYSMS_DB_NAME}
       PLAYSMS_DB_USER: ${PLAYSMS_DB_USER}
       PLAYSMS_DB_PASS: ${PLAYSMS_DB_PASS}
       PLAYSMS_DB_HOST: ${PLAYSMS_DB_HOST}
       PLAYSMS_DB_PORT: ${PLAYSMS_DB_PORT}
-      TZ: ${PLAYSMS_CONTAINER_TIMEZONE}
+      WEB_ADMIN_PASSWORD: ${WEB_ADMIN_PASSWORD}
     build:
       context: .
       dockerfile: Dockerfile

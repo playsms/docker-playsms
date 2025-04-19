@@ -65,20 +65,23 @@ cat $PATHCONF/playsmsd.conf
 echo
 echo "=================================================================="
 echo
+FRESH_INSTALL=0
 SQL_FILE="$PATHSRC/db/playsms.sql"
 if echo "SELECT uid FROM playsms_tblUser WHERE status=2;" | mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} ${MYSQL_DBNAME} &>/dev/null; then
 	echo "Database ${MYSQL_DBNAME} ALREADY EXISTS."
 	echo "Database configuration skipped and installation process will continue."
 else
 	if echo "CREATE DATABASE ${MYSQL_DBNAME};" | mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} &>/dev/null; then
-		echo "Database ${MYSQL_DBNAME} created."
+		echo "This is a new installation."
+		echo "Database ${MYSQL_DBNAME} created."		
 	else
 		echo "Failed to create database ${MYSQL_DBNAME}."
-		echo "Database ${MYSQL_DBNAME} is already exists."
+		echo "Database ${MYSQL_DBNAME} may be already exists."
 	fi
 	echo "Importing data from ${SQL_FILE}..."
 	if mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} ${MYSQL_DBNAME} < ${SQL_FILE} &>/dev/null; then
-		echo "Data imported successfully."
+		echo "Database has been installed successfully."		
+		FRESH_INSTALL=1
 	else
 		echo "ERROR: Failed to import data from ${SQL_FILE} to database ${MYSQL_DBNAME}."
 		echo 
@@ -88,6 +91,26 @@ fi
 echo
 echo "=================================================================="
 echo
+if [ "$FRESH_INSTALL" == "1" ]; then
+	WEB_ADMIN_PASSWORD_HASHED="$(php -r "echo password_hash(\"$WEB_ADMIN_PASSWORD\", PASSWORD_BCRYPT, [\"cost\"=>12]);")"
+	if echo "UPDATE playsms_tblUser SET password='$WEB_ADMIN_PASSWORD_HASHED' WHERE username='admin';" | \
+		mysql -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} -P${MYSQL_TCP_PORT} ${MYSQL_DBNAME} &>/dev/null; 
+	then
+		echo "Web admin password has been successfully updated."
+		echo
+		echo "WARNING:"
+		echo "	- Web admin username is admin"
+		echo "	- Web admin password is $WEB_ADMIN_PASSWORD"
+		echo "	- This is just the default admin password"
+		echo "	- Login and change it to your own strong password"
+		sleep 5
+	else
+		echo "WARNING: Failed to update web admin password."
+	fi
+	echo
+	echo "=================================================================="
+	echo
+fi
 echo "playSMS has been installed on your system"
 echo
 echo "Your playSMS daemon script operational guide:"

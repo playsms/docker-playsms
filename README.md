@@ -36,6 +36,8 @@ PLAYSMS_DB_PASS="playsms"
 PLAYSMS_DB_HOST="mariadb"
 PLAYSMS_DB_PORT=3306
 
+WEB_ADMIN_PASSWORD="changemeplease"
+
 PLAYSMS_CONTAINER_TIMEZONE="Asia/Jakarta"
 
 DOCKER_IMAGE_PLAYSMS="playsms/playsms:1.4.x"
@@ -50,12 +52,15 @@ GID=19191
 UID=19191
 ```
 
-Change playSMS DB password at least, and save it. The DB host should be `mariadb` unless you've changed it in [compose.yaml](https://github.com/playsms/docker-playsms/blob/master/compose.yaml).
+Change playSMS DB password and web admin password at least, and save it.
+The DB host should be `mariadb` unless you've changed it in [compose.yaml](https://github.com/playsms/docker-playsms/blob/master/compose.yaml).
 
 Next, to install and then use it run this:
 ```
 docker compose up
 ```
+
+Note that web admin password is `changemeplease` if you dont change it on `.env` file.
 
 
 # Usage
