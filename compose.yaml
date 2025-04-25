@@ -8,7 +8,7 @@ services:
       MARIADB_PASSWORD: ${PLAYSMS_DB_PASS}
       TZ: ${PLAYSMS_CONTAINER_TIMEZONE}
     volumes:
-      - ./_vol/mysql/data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     networks:
       - playsms-network
     healthcheck:
@@ -38,8 +38,8 @@ services:
       dockerfile: Dockerfile
       args: *playsms_vars
     volumes:
-      - ./_vol/playsms/log:/home/playsms/log
-      - ./_vol/playsms/web:/home/playsms/web
+      - playsms-log:/home/playsms/log
+      - playsms-web:/home/playsms/web
     depends_on:
       mariadb:
         condition: service_healthy
@@ -62,9 +62,9 @@ services:
       WEBSERVER_HTTPS_PORT: ${WEBSERVER_HTTPS_PORT}
       TZ: ${PLAYSMS_CONTAINER_TIMEZONE}
     volumes:
-      - ./_vol/nginx/templates:/etc/nginx/templates
-      - ./_vol/nginx/ssl:/etc/nginx/ssl
-      - ./_vol/playsms/web:/var/www/html
+      - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/ssl:/etc/nginx/ssl
+      - playsms-web:/var/www/html
     depends_on:
       mariadb:
         condition: service_healthy      
@@ -87,3 +87,8 @@ services:
 networks:
   playsms-network:
     driver: bridge
+
+volumes:
+  mysql-data:
+  playsms-log:
+  playsms-web:
