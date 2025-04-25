@@ -70,7 +70,7 @@ Run it and leave it:
 docker compose up -d
 ```
 
-Check `compose.yaml` for volumes. Nginx configuration can be found in `nginx/` locally. but MariaDB and playSMS files are mounted to named volumes.
+Check `compose.yaml` for volumes. Nginx configuration can be found in `nginx/` locally but MariaDB and playSMS files are mounted to named volumes.
 
 Suppose you build your own image and update playSMS, then you only need to remove/empty `playsms-web` volume.
 The installer will know that you have existing data already and will not re-insert with fresh install.
