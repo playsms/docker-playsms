@@ -3,8 +3,8 @@ docker-playsms
 
 Item            | Info
 --------------- | ---------------
-Project update  | 250420
-Project version | 3.4
+Project update  | 250425
+Project version | 3.5
 playSMS version | [1.4.x](https://github.com/playsms/playsms)
 
 This project is playSMS docker image project.
@@ -48,8 +48,8 @@ WEBSERVER_SERVER_NAME="localhost"
 WEBSERVER_HTTP_PORT=80
 WEBSERVER_HTTPS_PORT=443
 
-GID=19191
-UID=19191
+GID=1000
+UID=1000
 ```
 
 Change playSMS DB password and web admin password at least, and save it.
@@ -70,14 +70,9 @@ Run it and leave it:
 docker compose up -d
 ```
 
-Note that volumes according to default `compose.yaml` are mounted to `_vol` folder.
+Check `compose.yaml` for volumes. Nginx configuration can be found in `nginx/` locally. but MariaDB and playSMS files are mounted to named volumes.
 
-For clean install remove `mysql` and `playsms` folders in `_vol`:
-```
-rm -rf _vol/mysql _vol/playsms
-```
-
-Suppose you build your own image and update playSMS, then you only need to remove `playsms` folder.
+Suppose you build your own image and update playSMS, then you only need to remove/empty `playsms-web` volume.
 The installer will know that you have existing data already and will not re-insert with fresh install.
 
 But please backup first before trying.
