@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 LABEL org.playsms.image.authors="araharja@protonmail.com"
 
 ARG GID
@@ -12,8 +12,8 @@ ARG PLAYSMS_DB_HOST
 ARG PLAYSMS_DB_PORT
 ARG WEB_ADMIN_PASSWORD
 
-RUN addgroup -g ${GID} -S playsms && \
-    adduser -D -u ${UID} -G playsms -S playsms
+RUN addgroup -g ${GID} playsms && \
+    adduser -D -u ${UID} -G playsms playsms
 
 RUN apk update && apk upgrade && \
     apk add --no-cache \
@@ -26,8 +26,10 @@ RUN apk update && apk upgrade && \
     rm -rf /tmp/* /var/cache/apk/*
 
 RUN sed -i /etc/php83/php-fpm.d/www.conf -e 's/^listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/' && \
-    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^user = nobody/;user = nobody/' && \
-    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^group = nobody/;group = nobody/' && \
+    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^user = nobody/user = playsms/' && \
+    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^group = nobody/group = playsms/' && \
+    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^;listen.owner = nobody/listen.owner = playsms/' && \
+    sed -i /etc/php83/php-fpm.d/www.conf -e 's/^;listen.group = nobody/listen.group = playsms/' && \
     sed -i /etc/php83/php.ini -e 's/^display_errors = Off/display_errors = On/' && \
     sed -i /etc/php83/php.ini -e "s#^;date.timezone =#date.timezone = ${TZ}#"
     
@@ -47,6 +49,6 @@ RUN chown playsms:playsms -R /_docker-setup.sh /etc/php83 && \
 	chmod 0644 /_docker-setup.sh && \
 	chmod 0777 -R /var/log
 
-USER playsms
+#USER playsms
 
 CMD ["/run.sh", "123"]

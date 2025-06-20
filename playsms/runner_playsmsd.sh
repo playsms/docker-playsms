@@ -12,10 +12,10 @@ fi
 while true; do
 	if ! ps ax | grep -v grep | grep -q "playsmsd.conf"; then
 		echo
-		/home/playsms/bin/playsmsd /home/playsms/etc/playsmsd.conf start		
+		su - playsms -c "/home/playsms/bin/playsmsd /home/playsms/etc/playsmsd.conf start"
 		sleep 2
 		echo
-		/home/playsms/bin/playsmsd /home/playsms/etc/playsmsd.conf check
+		su - playsms -c "/home/playsms/bin/playsmsd /home/playsms/etc/playsmsd.conf check"
 		echo
 	fi
 	sleep 5

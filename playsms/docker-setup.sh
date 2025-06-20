@@ -34,18 +34,25 @@ echo "playSMS conf path   = $PATHCONF"
 echo
 echo "=================================================================="
 echo
-mkdir -p $PATHCONF $PATHBIN $PATHLIB $PATHLOG $PATHWEB
-git clone --branch $PLAYSMS_VERSION --depth=1 https://github.com/playsms/playsms.git $PATHSRC
-cd $PATHSRC
-./getcomposer.sh
-cp -rR -f web/* $PATHWEB/
-cp -f web/config-dist.php $PATHWEB/config.php
-ln -s $PATHSRC/daemon/linux/bin/playsmsd.php $PATHBIN/playsmsd
-touch $PATHCONF/playsmsd.conf
-touch $PATHLOG/audit.log $PATHLOG/playsms.log
-ln -s $PATHWEB /var/www/html
-ln -s /etc/php83 /home/playsms/php83
-chmod -R 0777 $PATHLOG $PATHWEB/storage
+INSTALLED=0 &&
+mkdir -p $PATHCONF $PATHBIN $PATHLIB $PATHLOG $PATHWEB &&
+git clone --branch $PLAYSMS_VERSION --depth=1 https://github.com/playsms/playsms.git $PATHSRC &&
+cd $PATHSRC &&
+./getcomposer.sh &&
+cp -rR -f web/* $PATHWEB/ &&
+cp -f web/config-dist.php $PATHWEB/config.php &&
+ln -s $PATHSRC/daemon/linux/bin/playsmsd.php $PATHBIN/playsmsd &&
+touch $PATHCONF/playsmsd.conf &&
+touch $PATHLOG/audit.log $PATHLOG/playsms.log &&
+ln -s $PATHWEB /var/www/html &&
+ln -s /etc/php83 /home/playsms/php83 &&
+chmod -R 0777 $PATHLOG $PATHWEB/storage &&
+chown -R playsms:playsms $PATHCONF $PATHBIN $PATHLIB $PATHLOG $PATHWEB &&
+INSTALLED=1
+if [ ! "$INSTALLED" = "1" ]; then
+	echo "playSMS installation has failed. Exitting..."
+	exit 128
+fi
 echo
 echo "=================================================================="
 echo
