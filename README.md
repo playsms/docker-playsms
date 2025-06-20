@@ -3,7 +3,7 @@ docker-playsms
 
 Item            | Info
 --------------- | ---------------
-Project update  | 250425
+Project update  | 250620
 Project version | 3.6
 playSMS version | [1.4.x](https://github.com/playsms/playsms)
 
